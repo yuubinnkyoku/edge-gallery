@@ -348,6 +348,14 @@ fun isPixel10(): Boolean {
   return Build.MODEL != null && Build.MODEL.lowercase().contains("pixel 10")
 }
 
+fun isSnapdragon8EliteGen5(): Boolean {
+  if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+    return false
+  }
+  val socModel = Build.SOC_MODEL?.lowercase() ?: return false
+  return socModel.contains("sm8750") || socModel.contains("snapdragon 8 elite")
+}
+
 fun Modifier.clearFocusOnKeyboardDismiss(): Modifier = composed {
   var isFocused by remember { mutableStateOf(false) }
   var keyboardAppearedSinceLastFocused by remember { mutableStateOf(false) }

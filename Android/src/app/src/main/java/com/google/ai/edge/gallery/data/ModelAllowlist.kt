@@ -19,6 +19,7 @@ package com.google.ai.edge.gallery.data
 import android.os.Build
 import android.util.Log
 import com.google.ai.edge.gallery.common.isPixel10
+import com.google.ai.edge.gallery.common.isSnapdragon8EliteGen5
 import com.google.gson.annotations.SerializedName
 
 private const val TAG = "AGModelAllowlist"
@@ -121,6 +122,10 @@ data class AllowedModel(
         // Remove GPU from pixel 10 devices.
         if (isPixel10()) {
           accelerators.remove(Accelerator.GPU)
+        }
+        // Enable NPU option on Snapdragon 8 Elite Gen 5 devices.
+        if (isSnapdragon8EliteGen5() && !accelerators.contains(Accelerator.NPU)) {
+          accelerators = accelerators.toMutableList().apply { add(Accelerator.NPU) }
         }
       }
       if (defaultConfig.visionAccelerator != null) {
