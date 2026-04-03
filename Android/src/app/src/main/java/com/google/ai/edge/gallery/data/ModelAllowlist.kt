@@ -108,7 +108,7 @@ data class AllowedModel(
       llmMaxToken = defaultConfig.maxTokens ?: 1024
       llmMaxContextLength = defaultConfig.maxContextLength
       if (defaultConfig.accelerators != null) {
-        val items = defaultConfig.accelerators.split(",")
+        val items = defaultConfig.accelerators.split(",").map { it.trim() }
         val mutableAccelerators = mutableListOf<Accelerator>()
         for (item in items) {
           if (item == "cpu") {
