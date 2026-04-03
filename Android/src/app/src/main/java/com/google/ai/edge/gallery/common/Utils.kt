@@ -353,7 +353,7 @@ fun isSnapdragon8EliteGen5(): Boolean {
     return false
   }
   val socModel = Build.SOC_MODEL?.lowercase() ?: return false
-  return socModel.contains("sm8750") || socModel.contains("snapdragon 8 elite")
+  return socModel.contains("sm8750") || socModel.contains("snapdragon 8 elite gen 5")
 }
 
 fun Modifier.clearFocusOnKeyboardDismiss(): Modifier = composed {

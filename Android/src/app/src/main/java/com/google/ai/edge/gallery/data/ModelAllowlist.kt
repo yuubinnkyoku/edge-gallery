@@ -125,7 +125,10 @@ data class AllowedModel(
         }
         // Enable NPU option on Snapdragon 8 Elite Gen 5 devices.
         if (isSnapdragon8EliteGen5() && !accelerators.contains(Accelerator.NPU)) {
-          accelerators = accelerators.toMutableList().apply { add(Accelerator.NPU) }
+          (accelerators as? MutableList<Accelerator>)?.add(Accelerator.NPU)
+            ?: run {
+              accelerators = accelerators.toMutableList().apply { add(Accelerator.NPU) }
+            }
         }
       }
       if (defaultConfig.visionAccelerator != null) {
