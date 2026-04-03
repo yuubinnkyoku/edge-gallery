@@ -33,7 +33,16 @@ jobs:
         run: chmod +x Android/src/gradlew
 
       - name: Build release APK
-        run: ./gradlew assembleRelease
+        run: |
+          for i in 1 2 3; do
+            ./gradlew assembleRelease && break
+            if [ "$i" -eq 3 ]; then
+              echo "Build failed after 3 attempts"
+              exit 1
+            fi
+            echo "Build attempt $i failed. Retrying in 15 seconds..."
+            sleep 15
+          done
         working-directory: Android/src
 
       - name: Upload APK to GitHub Release
