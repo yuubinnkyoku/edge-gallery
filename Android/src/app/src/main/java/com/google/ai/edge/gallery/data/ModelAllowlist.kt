@@ -109,27 +109,25 @@ data class AllowedModel(
       llmMaxContextLength = defaultConfig.maxContextLength
       if (defaultConfig.accelerators != null) {
         val items = defaultConfig.accelerators.split(",")
-        accelerators = mutableListOf()
+        val mutableAccelerators = mutableListOf<Accelerator>()
         for (item in items) {
           if (item == "cpu") {
-            accelerators.add(Accelerator.CPU)
+            mutableAccelerators.add(Accelerator.CPU)
           } else if (item == "gpu") {
-            accelerators.add(Accelerator.GPU)
+            mutableAccelerators.add(Accelerator.GPU)
           } else if (item == "npu") {
-            accelerators.add(Accelerator.NPU)
+            mutableAccelerators.add(Accelerator.NPU)
           }
         }
         // Remove GPU from pixel 10 devices.
         if (isPixel10()) {
-          accelerators.remove(Accelerator.GPU)
+          mutableAccelerators.remove(Accelerator.GPU)
         }
         // Enable NPU option on Snapdragon 8 Elite Gen 5 devices.
-        if (isSnapdragon8EliteGen5() && !accelerators.contains(Accelerator.NPU)) {
-          (accelerators as? MutableList<Accelerator>)?.add(Accelerator.NPU)
-            ?: run {
-              accelerators = accelerators.toMutableList().apply { add(Accelerator.NPU) }
-            }
+        if (isSnapdragon8EliteGen5() && !mutableAccelerators.contains(Accelerator.NPU)) {
+          mutableAccelerators.add(Accelerator.NPU)
         }
+        accelerators = mutableAccelerators
       }
       if (defaultConfig.visionAccelerator != null) {
         val accelerator = defaultConfig.visionAccelerator
